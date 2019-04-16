@@ -5,7 +5,10 @@ from rest_framework.response import Response as RestResponse
 from .google_news import top_news_title, top_education_news
 from .popular_newspaper import popular_paper, hot_news
 from .serializers import UserSerializer, GroupSerializer
-from .korean import top_news_korean
+from .korean import top_news_korean, top_news_korean_times
+from .dailystar_top_news import daily_star_news
+from .bangla_bbc_news import bangla_bbc_news
+from .japan_bbc_news import japan_bbc_news
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -62,3 +65,58 @@ class TopKoreanNews(viewsets.ViewSet):
         link = top_news_korean()
         ans = {'status': 200, 'item': 'GET', 'newspapers': topic, 'Top News Title & Link': link}
         return RestResponse(ans)
+
+
+class DailyStarTopNews(viewsets.ViewSet):
+    def list(self, request):
+        topic = request.GET.get('top')
+        link = daily_star_news()
+        ans = {'status': 200, 'item': 'GET', 'newspapers': topic, 'Top News Title & Link': link}
+        return RestResponse(ans)
+
+
+class BanglaBccNews(viewsets.ViewSet):
+    def list(self, request):
+        topic = request.GET.get('top')
+        link = bangla_bbc_news()
+        ans = {'status': 200, 'item': 'GET', 'newspapers': topic, 'Top News Title & Link': link}
+        return RestResponse(ans)
+
+
+class JapanBccNews(viewsets.ViewSet):
+    def list(self, request):
+        topic = request.GET.get('top')
+        link = japan_bbc_news()
+        ans = {'status': 200, 'item': 'GET', 'newspapers': topic, 'Top News Title & Link': link}
+        return RestResponse(ans)
+
+
+class AllNews(viewsets.ViewSet):
+    def list(self, request):
+        language = request.GET.get('lan')
+        newspaper = request.GET.get('paper')
+
+        if language == 'ja':
+            link = japan_bbc_news()
+            ans = {'status': 200, 'item': 'GET', 'newspapers': language, 'Top News Title & Link': link}
+            return RestResponse(ans)
+
+        if language == 'ko':
+            if newspaper == 'koreantimes':
+                link = top_news_korean_times()
+                ans = {'status': 200, 'item': 'GET', 'newspapers': language, 'Top News Title & Link': link}
+                return RestResponse(ans)
+            else:
+                link = top_news_korean()
+                ans = {'status': 200, 'item': 'GET', 'newspapers': language, 'Top News Title & Link': link}
+                return RestResponse(ans)
+
+        if language == 'bn':
+            link = bangla_bbc_news()
+            ans = {'status': 200, 'item': 'GET', 'newspapers': language, 'Top News Title & Link': link}
+            return RestResponse(ans)
+
+        else:
+            link = top_news_title()
+            ans = {'status': 200, 'item': 'GET', 'newspapers': language, 'Top News Title & Link': link}
+            return RestResponse(ans)

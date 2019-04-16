@@ -28,6 +28,10 @@ router.register(r'hotnews', views.TopNewsTopic, basename='hotnews')
 router.register(r'LatestNews', views.LatestNews, basename='LatestNews')
 router.register(r'EducationNews', views.TopEducationNews, basename='EducationNews')
 router.register(r'TopKoreanNews', views.TopKoreanNews, basename='TopKoreanNews')
+router.register(r'DailyStarTopNews', views.DailyStarTopNews, basename='DailyStarTopNews')
+router.register(r'BanglaBccNews', views.BanglaBccNews, basename='BanglaBccNews')
+router.register(r'JapanBccNews', views.JapanBccNews, basename='JapanBccNews')
+router.register(r'AllNews', views.AllNews, basename='AllNews')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
