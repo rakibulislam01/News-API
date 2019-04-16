@@ -32,6 +32,7 @@ router.register(r'DailyStarTopNews', views.DailyStarTopNews, basename='DailyStar
 router.register(r'BanglaBccNews', views.BanglaBccNews, basename='BanglaBccNews')
 router.register(r'JapanBccNews', views.JapanBccNews, basename='JapanBccNews')
 router.register(r'AllNews', views.AllNews, basename='AllNews')
+router.register(r'SportsNews', views.SportsNews, basename='SportsNews')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

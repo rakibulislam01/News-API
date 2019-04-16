@@ -5,10 +5,12 @@ from rest_framework.response import Response as RestResponse
 from .google_news import top_news_title, top_education_news
 from .popular_newspaper import popular_paper, hot_news
 from .serializers import UserSerializer, GroupSerializer
-from .korean import top_news_korean, top_news_korean_times
+from .korean_news import bbc_korean_news, world_korean_news, google_korean_news, korean_sports_news
 from .dailystar_top_news import daily_star_news
 from .bangla_bbc_news import bangla_bbc_news
-from .japan_bbc_news import japan_bbc_news
+from .japanese_news import bbc_japan_news, world_latest_news, japanese_sports_news
+from .english_news import world_news, english_sports_news
+from .sports_news import sports_news
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -62,7 +64,7 @@ class TopEducationNews(viewsets.ViewSet):
 class TopKoreanNews(viewsets.ViewSet):
     def list(self, request):
         topic = request.GET.get('top')
-        link = top_news_korean()
+        link = bbc_korean_news()
         ans = {'status': 200, 'item': 'GET', 'newspapers': topic, 'Top News Title & Link': link}
         return RestResponse(ans)
 
@@ -86,7 +88,15 @@ class BanglaBccNews(viewsets.ViewSet):
 class JapanBccNews(viewsets.ViewSet):
     def list(self, request):
         topic = request.GET.get('top')
-        link = japan_bbc_news()
+        link = bbc_japan_news()
+        ans = {'status': 200, 'item': 'GET', 'newspapers': topic, 'Top News Title & Link': link}
+        return RestResponse(ans)
+
+
+class SportsNews(viewsets.ViewSet):
+    def list(self, request):
+        topic = request.GET.get('top')
+        link = sports_news()
         ans = {'status': 200, 'item': 'GET', 'newspapers': topic, 'Top News Title & Link': link}
         return RestResponse(ans)
 
@@ -97,18 +107,53 @@ class AllNews(viewsets.ViewSet):
         newspaper = request.GET.get('paper')
 
         if language == 'ja':
-            link = japan_bbc_news()
-            ans = {'status': 200, 'item': 'GET', 'newspapers': language, 'Top News Title & Link': link}
-            return RestResponse(ans)
+            if newspaper == 'world':
+                link = world_latest_news()
+                ans = {'status': 200, 'item': 'GET', 'language': language, 'newspaper': newspaper, 'Top News Title': link}
+                return RestResponse(ans)
+
+            if newspaper == 'google':
+                link = google_korean_news()
+                ans = {'status': 200, 'item': 'GET', 'language': language, 'newspaper': newspaper, 'Top News Title': link}
+                return RestResponse(ans)
+
+            if newspaper == 'bbc':
+                link = bbc_japan_news()
+                ans = {'status': 200, 'item': 'GET', 'language': language, 'newspaper': newspaper, 'Top News Title': link}
+                return RestResponse(ans)
+
+            if newspaper == 'sports':
+                link = japanese_sports_news()
+                ans = {'status': 200, 'item': 'GET', 'language': language, 'newspaper': newspaper, 'Top News Title': link}
+                return RestResponse(ans)
+
+            else:
+                ans = {'status': 201, 'item': 'GET', 'newspapers': language, 'Top News Title ': "Not valid"}
+                return RestResponse(ans)
 
         if language == 'ko':
-            if newspaper == 'koreantimes':
-                link = top_news_korean_times()
-                ans = {'status': 200, 'item': 'GET', 'newspapers': language, 'Top News Title & Link': link}
+            if newspaper == 'world':
+                link = world_korean_news()
+                ans = {'status': 200, 'item': 'GET', 'language': language, 'newspaper': newspaper, 'Top News Title': link}
                 return RestResponse(ans)
+
+            if newspaper == 'google':
+                link = google_korean_news()
+                ans = {'status': 200, 'item': 'GET', 'language': language, 'newspaper': newspaper, 'Top News Title': link}
+                return RestResponse(ans)
+
+            if newspaper == 'bbc':
+                link = bbc_korean_news()
+                ans = {'status': 200, 'item': 'GET', 'language': language, 'newspaper': newspaper, 'Top News Title': link}
+                return RestResponse(ans)
+
+            if newspaper == 'sports':
+                link = korean_sports_news()
+                ans = {'status': 200, 'item': 'GET', 'language': language, 'newspaper': newspaper, 'Top News Title': link}
+                return RestResponse(ans)
+
             else:
-                link = top_news_korean()
-                ans = {'status': 200, 'item': 'GET', 'newspapers': language, 'Top News Title & Link': link}
+                ans = {'status': 201, 'item': 'GET', 'newspapers': language, 'Top News Title ': "Not valid"}
                 return RestResponse(ans)
 
         if language == 'bn':
@@ -116,7 +161,18 @@ class AllNews(viewsets.ViewSet):
             ans = {'status': 200, 'item': 'GET', 'newspapers': language, 'Top News Title & Link': link}
             return RestResponse(ans)
 
+        if language == 'en':
+            if newspaper == 'world':
+                link = world_news()
+                titles = link
+                ans = {'status': 200, 'item': 'GET', 'newspapers': language, 'Top News Title & Link': titles}
+                return RestResponse(ans)
+
+            if newspaper == 'sports':
+                link = english_sports_news()
+                ans = {'status': 200, 'item': 'GET', 'language': language, 'newspaper': newspaper, 'Top News Title': link}
+                return RestResponse(ans)
+
         else:
-            link = top_news_title()
-            ans = {'status': 200, 'item': 'GET', 'newspapers': language, 'Top News Title & Link': link}
+            ans = {'status': 200, 'item': 'GET', 'newspapers': language, 'Top News Title & Link': 'Not valid'}
             return RestResponse(ans)
